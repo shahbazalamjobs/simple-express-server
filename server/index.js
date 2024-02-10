@@ -1,7 +1,6 @@
 // Import necessary libraries
 import express from 'express';
 import pg from 'pg';
-
 import dotenv from 'dotenv';
 
 // Load environment variables from .env file
@@ -9,7 +8,7 @@ dotenv.config();
 
 // Create an instance of Express
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // PostgreSQL configuration
 const pool = new pg.Pool({
@@ -37,7 +36,7 @@ app.get('/api/obj', (req, res) => {
 app.get('/data', async (req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM your_table_name');
+        const result = await client.query('SELECT * FROM messageTable');
         const data = result.rows;
         client.release();
         res.json(data);
