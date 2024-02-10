@@ -9,8 +9,8 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://simple-express-server-postgres.onrender.com/data');
+        // console.log(response.data);
         setData(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
