@@ -1,23 +1,28 @@
-// import { defineConfig } from 'vite'
-// import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// // https://vitejs.dev/config/
-// export default defineConfig({
-//   plugins: [react()],
-// })
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+        host: true,
+        strictPort: true,
+        port: 8080,
+      }
+})
 
 
 
 // vite.config.js
 
-import { defineConfig } from 'vite'; // Import defineConfig
-import react from '@vitejs/plugin-react';
+// import { defineConfig } from 'vite'; // Import defineConfig
+// import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-  host: true,
-  strictPort: true,
-  port: 8000,
-  },
-});
+// export default defineConfig({
+//   plugins: [react()],
+//   server: {
+//     host: true,
+//     strictPort: true,
+//     port: 8080,
+//   },
+// });
