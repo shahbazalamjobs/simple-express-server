@@ -2,6 +2,7 @@
 import express from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -17,6 +18,9 @@ const pool = new pg.Pool({
         rejectUnauthorized: false,
     },
 });
+
+// Enable CORS for all routes
+app.use(cors());
 
 const users = [
     { name: "John", age: 30 },
@@ -56,3 +60,6 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+
+// npm create vite@latest
