@@ -6,24 +6,20 @@ const App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://simple-express-server-postgres.onrender.com/data');
-        // console.log(response.data);
+    axios.get('https://simple-express-server-postgres.onrender.com/data')
+      .then(response => {
         setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
+      })
+      .catch(error => {
+        console.error('Error fetching messages:', error);
+      });
   }, []);
 
   return (
     <div>
       <h2>Data List</h2>
       <ul>
-        {data.map((item, index) => (
+        {Array.isArray(data) && data.map((item, index) => (
           <li key={index}>{item.content}</li>
         ))}
       </ul>

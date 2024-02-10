@@ -1,6 +1,7 @@
 // Import necessary libraries
 import express from 'express';
 import pg from 'pg';
+import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -20,24 +21,9 @@ const pool = new pg.Pool({
 });
 
 // Enable CORS for all routes
-app.use(cors({
-    origin: 'http://localhost:5173'
-}));
+app.use(cors());
 
-// app.get("/", (req, res) => {
-//     res.setHeader("Access-Control-Allow-Origin", "*")
-//     res.setHeader("Access-Control-Allow-Credentials", "true");
-//     res.setHeader("Access-Control-Max-Age", "1800");
-//     res.setHeader("Access-Control-Allow-Headers", "content-type");
-//     res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
-// });
-
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-// });
-
+app.use(bodyParser.json());
 
 const users = [
     { name: "John", age: 30 },
@@ -45,16 +31,17 @@ const users = [
     { name: "Bob", age: 35 }
 ];
 
-
 app.get('/', (req, res) => {
     res.send("Root endpoint Running");
-})
+});
 
+// Define a route to retrieve static data
 app.get('/api/obj', (req, res) => {
-    res.send(users);
-})
+    res.json(users);
+});
+
 // Define a route to retrieve data from PostgreSQL
-app.get('/data', async (req, res) => {
+app.get('/data', async (req, res, next) => {
     try {
         const client = await pool.connect();
         const result = await client.query('SELECT * FROM messageTable');
@@ -63,20 +50,17 @@ app.get('/data', async (req, res) => {
         res.json(data);
     } catch (err) {
         console.error('Error executing query', err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        next(err); // Pass error to the error handling middleware
     }
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).json({ error: 'Internal Server Error' });
 });
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-
-
-// npm create vite@latest
