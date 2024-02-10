@@ -4,9 +4,10 @@ import axios from 'axios';
 
 const App = () => {
   const [data, setData] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    axios.get('https://simple-express-server-postgres.onrender.com/data')
+    axios.get(apiUrl)
       .then(response => {
         setData(response.data);
       })
